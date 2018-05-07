@@ -1,5 +1,4 @@
 require('dotenv').config();
-var HDWalletProvider = require("truffle-hdwallet-provider");
 
 module.exports = {
   networks: {
@@ -9,28 +8,12 @@ module.exports = {
       gas: 6500000,
       network_id: "5777"
     },
-    ropsten: {
-      provider: new HDWalletProvider(
-        process.env.MNENOMIC,
-        "https://ropsten.infura.io/" + process.env.INFURA_API_KEY
-      ),
-      network_id: 3,
-      gas: 4500000
-    },
     rinkeby: {
       host: "localhost", // Connect to geth on the specified
       port: 8545,
       from: process.env.OWNER_WALLET, // default address to use for any transaction Truffle makes during migrations
       network_id: 4,
       gas: 6712390 // Gas limit used for deploys
-    },
-    rinkebyInfura: {
-      provider: new HDWalletProvider(
-        process.env.MNENOMIC,
-        "https://rinkeby.infura.io/" + process.env.INFURA_API_KEY
-      ),
-      network_id: 4,
-      gas: 4500000
     }
   }
 };
