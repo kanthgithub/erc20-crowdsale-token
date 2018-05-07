@@ -1,7 +1,6 @@
 {
   "name": "erc20-crowdsale-token",
   "version": "1.0.0",
-  "description": "",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -21,5 +20,7 @@
   "homepage": "https://github.com/Little-Phil/erc20-crowdsale-token#readme",
   "dependencies": {
     "zeppelin-solidity": "^1.9.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
