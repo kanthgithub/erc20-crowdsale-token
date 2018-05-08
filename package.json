@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Little-Phil/erc20-crowdsale-token#readme",
   "dependencies": {
-    "dotenv": "^5.0.1",
+    "config": "^1.30.0",
     "openzeppelin-solidity": "^1.9.0"
   },
   "devDependencies": {
