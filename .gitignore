@@ -3,3 +3,4 @@ build/
 openzeppelin_flat_file/
 .env
 .idea
+config/*.json
