@@ -1,5 +1,5 @@
 
-# Project Title
+# Little Phil ICO
 
   
 
@@ -27,7 +27,7 @@ What things you need to install the software and how to install them
 
 NPM 
 Truffle, installed globally
-Geth, for main and test nets: ```geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="<account_wallet>"
+Geth, for main and test nets: geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="<account_wallet>"
 
 ```
 
