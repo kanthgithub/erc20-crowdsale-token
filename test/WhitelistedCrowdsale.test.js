@@ -1,4 +1,4 @@
-import ether from '../helpers/ether';
+const ether = require('./helpers/ether');
 
 const BigNumber = web3.BigNumber;
 
@@ -17,8 +17,8 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
 
   describe('single user whitelisting', function () {
     beforeEach(async function () {
-      this.token = await SimpleToken.new();
-      this.crowdsale = await WhitelistedCrowdsale.new(rate, wallet, this.token.address);
+      this.token = await LittlePhilCoin.new();
+      this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
       await this.token.transferOwnership(this.crowdsale.address);
       // await this.token.transfer(this.crowdsale.address, tokenSupply);
       await this.crowdsale.addToWhitelist(authorized);
@@ -54,8 +54,8 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
 
   describe('many user whitelisting', function () {
     beforeEach(async function () {
-      this.token = await SimpleToken.new();
-      this.crowdsale = await WhitelistedCrowdsale.new(rate, wallet, this.token.address);
+      this.token = await LittlePhilCoin.new();
+      this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
       await this.token.transferOwnership(this.crowdsale.address);
       // await this.token.transfer(this.crowdsale.address, tokenSupply);
       await this.crowdsale.addManyToWhitelist([authorized, anotherAuthorized]);

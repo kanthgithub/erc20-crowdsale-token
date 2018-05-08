@@ -11,6 +11,12 @@ module.exports = {
       gas: 6500000,
       network_id: "5777"
     },
+    ganache: {
+      host: "localhost",
+      port: 7545,
+      gas: 6500000,
+      network_id: 3
+    },
     rinkeby: {
       host: "localhost", // Connect to geth on the specified
       port: 8545,
