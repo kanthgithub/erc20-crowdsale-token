@@ -3,7 +3,7 @@ const LittlePhilCoin = artifacts.require("./LittlePhilCoin.sol");
 
 module.exports = function(deployer) {
   const rate = new web3.BigNumber(1000);
-  const wallet = "0x5e611e34cfb6fd0a6f6f0c61038e80465a5b9fea";
+  const wallet = "0xe35FEf8d3E0BDBe34318aAf2611e40ACc29FaAB6"; // receiver multisig wallet for Eth
 
   return deployer
     .then(() => {
