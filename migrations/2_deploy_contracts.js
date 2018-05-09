@@ -5,7 +5,13 @@ const LittlePhilCoin = artifacts.require("./LittlePhilCoin.sol");
 
 module.exports = function(deployer) {
     const rate = new web3.BigNumber(1000);
-    const wallet = config.get("MULTISIG_WALLET"); // receiver multisig wallet for Eth
+    const wallet = config.get('MULTISIG_WALLET'); // receiver multisig wallet for Eth
+    const supplierWallet = config.get('SUPPLIER_WALLET');
+    const teamWallet = config.get('TEAM_WALLET');
+    const projectWallet = config.get('PROJECT_WALLET');
+    const advisorWallet = config.get('ADVISOR_WALLET');
+    const bountyWallet = config.get('BOUNTY_WALLET');
+    const airdropWallet = config.get('AIRDROP_WALLET');
 
   return deployer
     .then(() => {
@@ -16,14 +22,7 @@ module.exports = function(deployer) {
         LittlePhilCrowdsale,
         rate,
         wallet,
-        [
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
-          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959"
-        ],
+        [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
         LittlePhilCoin.address,
       );
     });
