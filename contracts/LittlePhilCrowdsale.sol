@@ -3,7 +3,6 @@ pragma solidity ^0.4.21;
 import "./LittlePhilCoin.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/WhitelistedCrowdsale.sol";
-import "openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol";
 
 
 contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, CappedCrowdsale { 
@@ -16,8 +15,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, CappedCro
         uint256 _cap
     )
     public
-    Crowdsale(_rate, _wallet, _token) 
-    CappedCrowdsale(_cap) {}
+    Crowdsale(_rate, _wallet, _token) {}
 
 
     // Ownership management

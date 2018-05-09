@@ -17,15 +17,13 @@ Clone out Github repo and checkout a new branch. Initialise the NPM packages wit
 
 ### Prerequisites
 
-  
-
-What things you need to install the software and how to install them
 
   
 
 ```
 
 NPM 
+Brew
 Truffle, installed globally
 Geth, for main and test nets: geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="<account_wallet>"
 
@@ -43,7 +41,11 @@ To get your osx or unix environment up and running, follow the steps below.
   
 
 ```
-
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew update
+brew upgrade
+brew tap ethereum/ethereum
+brew install ethereum
 cd ~ && npm install -g truffle;
 mkdir <dirname> && cd <dirname>;
 git clone git@github.com:Little-Phil/erc20-crowdsale-token.git;
