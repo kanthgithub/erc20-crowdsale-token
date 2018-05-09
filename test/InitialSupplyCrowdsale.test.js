@@ -1,3 +1,5 @@
+const global = require('./utils/global');
+
 const BigNumber = web3.BigNumber;
 
 const should = require('chai')
@@ -5,23 +7,10 @@ const should = require('chai')
     .use(require('chai-bignumber')(BigNumber))
     .should();
 
-const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
-const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
-
 contract('InitialSupplyCrowdsale', (accounts) => {
-    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet] = accounts;
-    const rate = new BigNumber(1000);
 
     beforeEach(async function () {
-        this.token = await LittlePhilCoin.new();
-        this.crowdsale = await LittlePhilCrowdsale.new(
-            rate,
-            wallet,
-            [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
-            this.token.address
-        );
-        await this.token.transferOwnership(this.crowdsale.address);
-        await this.crowdsale.setupInitialSupply();
+        await global.setupContracts(this, accounts);
     });
 
     describe('have correct initial balances', function () {

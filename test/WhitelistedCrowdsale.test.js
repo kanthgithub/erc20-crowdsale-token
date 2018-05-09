@@ -1,4 +1,5 @@
-const ether = require('./helpers/ether');
+const global = require('./utils/global');
+const ether = require('./utils/ether');
 
 const BigNumber = web3.BigNumber;
 
@@ -6,28 +7,21 @@ require('chai')
   .use(require('chai-as-promised'))
   .should();
 
-const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
-const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
-  
 contract('WhitelistedCrowdsale', function (accounts) {
-    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, authorized, unauthorized] = accounts;
-  const rate = new BigNumber(1000);
-  // const value = ether(2);
   const value = new web3.BigNumber(web3.toWei(3000000000000000, 'wei'));
-  const tokenSupply = new BigNumber('1e22');
+
+  let authorized;
+  let unauthorized;
 
   describe('single user whitelisting', function () {
 
       beforeEach(async function () {
-          this.token = await LittlePhilCoin.new();
-          this.crowdsale = await LittlePhilCrowdsale.new(
-              rate,
-              wallet,
-              [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
-              this.token.address
-          );
-          await this.token.transferOwnership(this.crowdsale.address);
-          await this.crowdsale.setupInitialState();
+          await global.setupContracts(this, accounts);
+
+          wallet = this.wallet;
+          authorized = this.account1;
+          unauthorized = this.account2;
+
           await this.crowdsale.addToWhitelist(authorized);
       });
 
@@ -64,15 +58,12 @@ contract('WhitelistedCrowdsale', function (accounts) {
 
   describe('many user whitelisting', function () {
     beforeEach(async function () {
-      this.token = await LittlePhilCoin.new();
-      this.crowdsale = await LittlePhilCrowdsale.new(
-          rate,
-          wallet,
-          [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
-          this.token.address
-      );
-      await this.token.transferOwnership(this.crowdsale.address);
-      await this.crowdsale.setupInitialState();
+      await global.setupContracts(this, accounts);
+
+      wallet = this.wallet;
+      authorized = this.account1;
+      unauthorized = this.account2;
+
       await this.crowdsale.addToWhitelist(authorized);
     });
 
