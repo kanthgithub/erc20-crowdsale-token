@@ -18,7 +18,9 @@ module.exports = function(deployer) {
             LittlePhilCrowdsale,
             rate,
             wallet,
-            LittlePhilCoin.address
+            LittlePhilCoin.address,
+            goal,
+            cap
         );
     });
 };
