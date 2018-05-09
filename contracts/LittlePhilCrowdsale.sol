@@ -16,6 +16,11 @@ contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, InitialSu
         Crowdsale(_rate, _fundsWallet, _token)
         InitialSupplyCrowdsale(_supplyWallets) {}
 
+    function setupInitialState() external onlyOwner {
+        setupInitialSupply();
+    }
+
+    // Ownership management
     function transferOwnership(address _newOwner) public onlyOwner {
         require(msg.sender == owner); // Only the owner of the crowdsale contract should be able to call this function.
 

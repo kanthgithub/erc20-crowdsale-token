@@ -33,8 +33,6 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     uint256 public constant bountyTokens     =  30000000 * (10 ** decimals);
     uint256 public constant airdropTokens    =  20000000 * (10 ** decimals);
 
-    event Test(address purchaser, uint256 value);
-
     constructor(
         address[6] _supplyWallets
     ) public {

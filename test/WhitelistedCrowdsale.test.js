@@ -10,7 +10,7 @@ const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
 const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
   
 contract('WhitelistedCrowdsale', function (accounts) {
-    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, authorized, unauthorized, anotherAuthorized] = accounts;
+    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, authorized, unauthorized] = accounts;
   const rate = new BigNumber(1000);
   // const value = ether(2);
   const value = new web3.BigNumber(web3.toWei(3000000000000000, 'wei'));
@@ -27,7 +27,7 @@ contract('WhitelistedCrowdsale', function (accounts) {
               this.token.address
           );
           await this.token.transferOwnership(this.crowdsale.address);
-          await this.crowdsale.setupInitialSupply();
+          await this.crowdsale.setupInitialState();
           await this.crowdsale.addToWhitelist(authorized);
       });
 
@@ -69,10 +69,11 @@ contract('WhitelistedCrowdsale', function (accounts) {
           rate,
           wallet,
           [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
-          this.token.address);
+          this.token.address
+      );
       await this.token.transferOwnership(this.crowdsale.address);
-      await this.crowdsale.setupInitialSupply();
-      await this.crowdsale.addManyToWhitelist([authorized, anotherAuthorized]);
+      await this.crowdsale.setupInitialState();
+      await this.crowdsale.addToWhitelist(authorized);
     });
 
     describe('accepting payments', function () {
@@ -80,8 +81,6 @@ contract('WhitelistedCrowdsale', function (accounts) {
       it('should accept payments to whitelisted (from whichever buyers)', async function () {
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.fulfilled;
         await this.crowdsale.buyTokens(authorized, { value: value, from: unauthorized }).should.be.fulfilled;
-        await this.crowdsale.buyTokens(anotherAuthorized, { value: value, from: authorized }).should.be.fulfilled;
-        await this.crowdsale.buyTokens(anotherAuthorized, { value: value, from: unauthorized }).should.be.fulfilled;
       });
 
       it('should reject payments to not whitelisted (with whichever buyers)', async function () {
@@ -91,9 +90,10 @@ contract('WhitelistedCrowdsale', function (accounts) {
       });
 
       it('should reject payments to addresses removed from whitelist', async function () {
-        await this.crowdsale.removeFromWhitelist(anotherAuthorized);
+        await this.crowdsale.addToWhitelist(unauthorized);
+        await this.crowdsale.removeFromWhitelist(unauthorized);
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.fulfilled;
-        await this.crowdsale.buyTokens(anotherAuthorized, { value: value, from: authorized }).should.be.rejected;
+        await this.crowdsale.buyTokens(unauthorized, { value: value, from: authorized }).should.be.rejected;
       });
 
     });
@@ -102,8 +102,6 @@ contract('WhitelistedCrowdsale', function (accounts) {
       it('should correctly report whitelisted addresses', async function () {
         let isAuthorized = await this.crowdsale.whitelist(authorized);
         isAuthorized.should.equal(true);
-        let isAnotherAuthorized = await this.crowdsale.whitelist(anotherAuthorized);
-        isAnotherAuthorized.should.equal(true);
         let isntAuthorized = await this.crowdsale.whitelist(unauthorized);
         isntAuthorized.should.equal(false);
       });

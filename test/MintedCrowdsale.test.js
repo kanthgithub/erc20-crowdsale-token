@@ -30,7 +30,7 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
             this.token.address
         );
         await this.token.transferOwnership(this.crowdsale.address);
-        await this.crowdsale.setupInitialSupply();
+        await this.crowdsale.setupInitialState();
 
         await this.crowdsale.addToWhitelist(_);
         await this.crowdsale.addToWhitelist(account1);
