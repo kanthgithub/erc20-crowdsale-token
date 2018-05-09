@@ -3,3 +3,9 @@ build/
 openzeppelin_flat_file/
 .env
 .idea
+
+# Config files
+config/local.json
+config/development.json
+config/staging.json
+config/production.json
