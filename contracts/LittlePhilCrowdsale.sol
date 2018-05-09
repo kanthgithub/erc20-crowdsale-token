@@ -16,6 +16,8 @@ contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, InitialSu
         Crowdsale(_rate, _fundsWallet, _token)
         InitialSupplyCrowdsale(_supplyWallets) {}
 
+    // Sets up the initial balances
+    // This must be called after ownership of the token is transferred to the crowdsale
     function setupInitialState() external onlyOwner {
         setupInitialSupply();
     }
