@@ -4,16 +4,20 @@ import "./LittlePhilCoin.sol";
 import "./inheritable/InitialSupplyCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/WhitelistedCrowdsale.sol";
+import "openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol";
 
-contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, InitialSupplyCrowdsale {
+contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, CappedCrowdsale, InitialSupplyCrowdsale {
 
+    // Constructor
     constructor(
         uint256 _rate,
         address _fundsWallet,
         address[6] _supplyWallets,
-        LittlePhilCoin _token
+        LittlePhilCoin _token,
+        uint256 _cap
     ) public
         Crowdsale(_rate, _fundsWallet, _token)
+        CappedCrowdsale(_cap)
         InitialSupplyCrowdsale(_supplyWallets) {}
 
     // Sets up the initial balances
