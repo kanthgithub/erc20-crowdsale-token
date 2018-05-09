@@ -9,22 +9,30 @@ require('chai')
 const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
 const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
   
-contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized, anotherAuthorized]) {
+contract('WhitelistedCrowdsale', function (accounts) {
+    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, authorized, unauthorized, anotherAuthorized] = accounts;
   const rate = new BigNumber(1000);
   // const value = ether(2);
   const value = new web3.BigNumber(web3.toWei(3000000000000000, 'wei'));
   const tokenSupply = new BigNumber('1e22');
 
   describe('single user whitelisting', function () {
-    beforeEach(async function () {
-      this.token = await LittlePhilCoin.new();
-      this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
-      await this.token.transferOwnership(this.crowdsale.address);
-      // await this.token.transfer(this.crowdsale.address, tokenSupply);
-      await this.crowdsale.addToWhitelist(authorized);
-    });
+
+      beforeEach(async function () {
+          this.token = await LittlePhilCoin.new();
+          this.crowdsale = await LittlePhilCrowdsale.new(
+              rate,
+              wallet,
+              [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
+              this.token.address
+          );
+          await this.token.transferOwnership(this.crowdsale.address);
+          await this.crowdsale.setupInitialSupply();
+          await this.crowdsale.addToWhitelist(authorized);
+      });
 
     describe('accepting payments', function () {
+
       it('should accept payments to whitelisted (from whichever buyers)', async function () {
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.fulfilled;
         await this.crowdsale.buyTokens(authorized, { value: value, from: unauthorized }).should.be.fulfilled;
@@ -40,6 +48,7 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
         await this.crowdsale.removeFromWhitelist(authorized);
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.rejected;
       });
+
     });
 
     describe('reporting whitelisted', function () {
@@ -50,18 +59,24 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
         isntAuthorized.should.equal(false);
       });
     });
+
   });
 
   describe('many user whitelisting', function () {
     beforeEach(async function () {
       this.token = await LittlePhilCoin.new();
-      this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
+      this.crowdsale = await LittlePhilCrowdsale.new(
+          rate,
+          wallet,
+          [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
+          this.token.address);
       await this.token.transferOwnership(this.crowdsale.address);
-      // await this.token.transfer(this.crowdsale.address, tokenSupply);
+      await this.crowdsale.setupInitialSupply();
       await this.crowdsale.addManyToWhitelist([authorized, anotherAuthorized]);
     });
 
     describe('accepting payments', function () {
+
       it('should accept payments to whitelisted (from whichever buyers)', async function () {
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.fulfilled;
         await this.crowdsale.buyTokens(authorized, { value: value, from: unauthorized }).should.be.fulfilled;
@@ -80,6 +95,7 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
         await this.crowdsale.buyTokens(authorized, { value: value, from: authorized }).should.be.fulfilled;
         await this.crowdsale.buyTokens(anotherAuthorized, { value: value, from: authorized }).should.be.rejected;
       });
+
     });
 
     describe('reporting whitelisted', function () {
@@ -92,5 +108,7 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
         isntAuthorized.should.equal(false);
       });
     });
+
   });
+
 });

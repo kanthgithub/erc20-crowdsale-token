@@ -14,7 +14,8 @@ const should = require('chai')
 const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
 const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
 
-contract('LittlePhilCrowdsale as MintedCrowdsale', ([_, wallet, investor, purchaser]) => {
+contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
+    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, account1, account2] = accounts;
     const rate = new BigNumber(1000);
     const value = ether(12);
 
@@ -22,11 +23,18 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', ([_, wallet, investor, purcha
 
     beforeEach(async function () {
         this.token = await LittlePhilCoin.new();
-        this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
+        this.crowdsale = await LittlePhilCrowdsale.new(
+            rate,
+            wallet,
+            [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
+            this.token.address
+        );
         await this.token.transferOwnership(this.crowdsale.address);
+        await this.crowdsale.setupInitialSupply();
+
         await this.crowdsale.addToWhitelist(_);
-        await this.crowdsale.addToWhitelist(investor);
-        await this.crowdsale.addToWhitelist(purchaser);
+        await this.crowdsale.addToWhitelist(account1);
+        await this.crowdsale.addToWhitelist(account2);
     });
 
     describe('accepting payments', function () {
@@ -37,42 +45,33 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', ([_, wallet, investor, purcha
 
         it('should accept payments', async function () {
             await this.crowdsale.send(value).should.be.fulfilled;
-            await this.crowdsale.buyTokens(investor, { value: value, from: purchaser }).should.be.fulfilled;
+            await this.crowdsale.buyTokens(account1, { value: value, from: account1 }).should.be.fulfilled;
         });
     });
 
     describe('high-level purchase', function () {
         it('should log purchase', async function () {
-            const { logs } = await this.crowdsale.sendTransaction({ value: value, from: investor });
+            const { logs } = await this.crowdsale.sendTransaction({ value: value, from: account1 });
             const event = logs.find(e => e.event === 'TokenPurchase');
             should.exist(event);
-            event.args.purchaser.should.equal(investor);
-            event.args.beneficiary.should.equal(investor);
+            event.args.purchaser.should.equal(account1);
+            event.args.beneficiary.should.equal(account1);
             event.args.value.should.be.bignumber.equal(value);
             event.args.amount.should.be.bignumber.equal(expectedTokenAmount);
         });
 
         it('should assign tokens to sender', async function () {
-            await this.crowdsale.sendTransaction({ value: value, from: investor });
-            let balance = await this.token.balanceOf(investor);
+            await this.crowdsale.sendTransaction({ value: value, from: account1 });
+            let balance = await this.token.balanceOf(account1);
             balance.should.be.bignumber.equal(expectedTokenAmount);
         });
 
         it('should forward funds to wallet', async function () {
             const pre = web3.eth.getBalance(wallet);
-            await this.crowdsale.sendTransaction({ value, from: investor });
+            await this.crowdsale.sendTransaction({ value, from: account1 });
             const post = web3.eth.getBalance(wallet);
             post.minus(pre).should.be.bignumber.equal(value);
         });
     });
 
-    // it('should insert an item', async () => {
-    //     assert.true(true);
-    //     // const crowdsaleInstance = LittlePhilCrowdsale.new({
-    //     //     from: accounts[0]
-    //     // });
-    //     //
-    //     // const result = await crowdsaleInstance.insert.call(1, 1234, {from: accounts[0]});
-    //     // assert.equal(result, 1);
-    // });
 });

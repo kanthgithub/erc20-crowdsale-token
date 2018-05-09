@@ -14,7 +14,15 @@ module.exports = function(deployer) {
         LittlePhilCrowdsale,
         rate,
         wallet,
-        LittlePhilCoin.address
+        [
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959",
+          "0x1237f06879194c9aff04f4763Dc9234Fd92D3959"
+        ],
+        LittlePhilCoin.address,
       );
     });
 };
