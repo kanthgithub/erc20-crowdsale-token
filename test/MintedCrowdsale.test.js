@@ -18,15 +18,18 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', ([_, wallet, investor, purcha
     const rate = new BigNumber(1000);
     const value = ether(12);
 
-    const expectedTokenAmount = rate.mul(value);
+    let expectedTokenAmount;
 
     beforeEach(async function () {
         this.token = await LittlePhilCoin.new();
         this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
         await this.token.transferOwnership(this.crowdsale.address);
+        await this.crowdsale.setState(1);
         await this.crowdsale.addToWhitelist(_);
         await this.crowdsale.addToWhitelist(investor);
         await this.crowdsale.addToWhitelist(purchaser);
+
+        expectedTokenAmount = rate.mul(value).mul(await this.crowdsale.getCurrentTierRatePercentage()).div(100);
     });
 
     describe('accepting payments', function () {

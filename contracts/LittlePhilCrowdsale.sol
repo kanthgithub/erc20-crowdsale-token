@@ -3,9 +3,10 @@ pragma solidity ^0.4.21;
 import "./LittlePhilCoin.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/WhitelistedCrowdsale.sol";
-import "./inheritable/RatedCrowdsale.sol";
+import "./inheritable/TieredCrowdsale.sol";
 
-contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, RatedCrowdsale { 
+contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, WhitelistedCrowdsale { 
+    
     constructor(uint256 _rate, address _wallet, MintableToken _token) public
     Crowdsale(_rate, _wallet, _token) {}
 
@@ -14,6 +15,6 @@ contract LittlePhilCrowdsale is MintedCrowdsale, WhitelistedCrowdsale, RatedCrow
 
         // I assume the crowdsale contract holds a reference to the token contract.
         LittlePhilCoin(token).transferOwnership(_newOwner);
-
     }
+
 }

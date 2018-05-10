@@ -20,7 +20,7 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
       this.token = await LittlePhilCoin.new();
       this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
       await this.token.transferOwnership(this.crowdsale.address);
-      // await this.token.transfer(this.crowdsale.address, tokenSupply);
+      await this.crowdsale.setState(1);
       await this.crowdsale.addToWhitelist(authorized);
     });
 
@@ -57,7 +57,7 @@ contract('WhitelistedCrowdsale', function ([_, wallet, authorized, unauthorized,
       this.token = await LittlePhilCoin.new();
       this.crowdsale = await LittlePhilCrowdsale.new(rate, wallet, this.token.address);
       await this.token.transferOwnership(this.crowdsale.address);
-      // await this.token.transfer(this.crowdsale.address, tokenSupply);
+      await this.crowdsale.setState(1);
       await this.crowdsale.addManyToWhitelist([authorized, anotherAuthorized]);
     });
 
