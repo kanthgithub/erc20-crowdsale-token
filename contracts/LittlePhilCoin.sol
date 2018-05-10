@@ -7,4 +7,10 @@ contract LittlePhilCoin is MintableToken, PausableToken {
     string public name = "Little Phil Coin";
     string public symbol = "LPC";
     uint8 public decimals = 18;
+
+    constructor () public {
+        // Pause token on creation and only unpause after ICO
+        pause();
+    }
+
 }
