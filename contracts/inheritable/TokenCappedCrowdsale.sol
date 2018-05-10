@@ -15,6 +15,9 @@ contract TokenCappedCrowdsale is Crowdsale {
 
     // Amount of wei raised
     uint256 public tokensRaised = 0;
+    
+    // event for manual refund of cap overflow
+    event CapOverflow(address indexed sender, uint256 weiAmount, uint256 recievedTokens, uint256 date);
 
     /**
      * Checks whether the tokenCap has been reached. 
@@ -28,7 +31,13 @@ contract TokenCappedCrowdsale is Crowdsale {
      * Accumulate the purchased tokens to the total raised
      */
     function _updatePurchasingState(address _beneficiary, uint256 _weiAmount) internal {
-        tokensRaised = tokensRaised.add(_getTokenAmount(_weiAmount));
+        uint256 purchasedTokens = _getTokenAmount(_weiAmount);
+        tokensRaised = tokensRaised.add(purchasedTokens);
+
+        if(capReached()) {
+            // manual process unused eth amount to sender
+            emit CapOverflow(_beneficiary, _weiAmount, purchasedTokens, now);
+        }
     }
 
 }

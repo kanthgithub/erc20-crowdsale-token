@@ -38,9 +38,6 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
     mapping(bytes32 => TierConfig) private tierConfigs;
 
-    // event for manual refund of cap overflow
-    event CapOverflow(uint256 weiAmount, uint256 recievedTokens, uint256 tierRatePercentage, uint256 date);
-
     /**
     * checks the state when validating a purchase
     */
@@ -78,8 +75,6 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
         // return number of LPC to provide
         if(requestedTokenAmount > remainingTokens ) {
-            // manual process unused eth amount to sender
-            emit CapOverflow(_weiAmount, remainingTokens, currentTierRate, now);
             return remainingTokens;
         }
     
@@ -93,15 +88,15 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     function createSalesTierConfigMap() private {
         tierConfigs [keccak256(SaleState.Initial)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PrivateSale)] = TierConfig({tierRatePercentage:100, hardCap: 420000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPrivateSale)] = TierConfig({tierRatePercentage:0, hardCap: 420000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.FinalisedPrivateSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({tierRatePercentage:140, hardCap: 180000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({tierRatePercentage:0, hardCap: 180000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({tierRatePercentage:130, hardCap: 270000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({tierRatePercentage:120, hardCap: 340000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({tierRatePercentage:110, hardCap: 390000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({tierRatePercentage:100, hardCap: 420000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({tierRatePercentage:0, hardCap: 420000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:0, hardCap: 420000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
     }
 
     /**
@@ -128,6 +123,36 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
         // update cap when state changes
         tokenCap = getCurrentTierHardcap();
+    }
+
+    /**
+    * @dev only allow onwer to modify the current SaleState
+    */
+    function _updatePurchasingState(address _beneficiary, uint256 _weiAmount) internal {
+        super._updatePurchasingState(_beneficiary, _weiAmount);
+
+        if(capReached()) {
+            if(state == SaleState.PrivateSale) {
+                state = SaleState.FinalisedPrivateSale;
+            }
+            else if(state == SaleState.PreSale) {
+                state = SaleState.FinalisedPreSale;
+            }
+            else if(state == SaleState.PublicSaleTier1) {
+                state = SaleState.PublicSaleTier2;
+            }
+            else if(state == SaleState.PublicSaleTier2) {
+                state = SaleState.PublicSaleTier3;
+            }
+            else if(state == SaleState.PublicSaleTier3) {
+                state = SaleState.PublicSaleTier4;
+            }
+            else if(state == SaleState.PublicSaleTier4) {
+                state = SaleState.FinalisedPublicSale;
+            }
+
+        }
+
     }
 
 }
