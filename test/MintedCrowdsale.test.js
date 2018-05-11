@@ -16,14 +16,17 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
     const rate = new BigNumber(1000);
     const value = ether(12);
 
-    const expectedTokenAmount = rate.mul(value);
+    const expectedTokenAmount = value.mul(rate);
 
     beforeEach(async function () {
+
         await global.setupContracts(this, accounts);
 
+        await this.crowdsale.setState(1);
         await this.crowdsale.addToWhitelist(this._);
         await this.crowdsale.addToWhitelist(this.account1);
         await this.crowdsale.addToWhitelist(this.account2);
+
     });
 
     describe('accepting payments', function () {

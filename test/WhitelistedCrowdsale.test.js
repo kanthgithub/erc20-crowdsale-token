@@ -22,6 +22,7 @@ contract('WhitelistedCrowdsale', function (accounts) {
           authorized = this.account1;
           unauthorized = this.account2;
 
+          await this.crowdsale.setState(1);
           await this.crowdsale.addToWhitelist(authorized);
       });
 
@@ -64,6 +65,7 @@ contract('WhitelistedCrowdsale', function (accounts) {
       authorized = this.account1;
       unauthorized = this.account2;
 
+      await this.crowdsale.setState(1);      
       await this.crowdsale.addToWhitelist(authorized);
     });
 
