@@ -2,6 +2,8 @@
  * File for anything that needs to be shared between multiple test suits
  */
 
+const config = require("config");
+
 const BigNumber = web3.BigNumber;
 
 const LittlePhilCoin = artifacts.require("LittlePhilCoin.sol");
@@ -15,7 +17,7 @@ const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
 const setupContracts = async (_this, accounts) => {
 
     const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, account1, account2] = accounts;
-    const rate = new BigNumber(1000);
+    const rate = new BigNumber(config.get('RATE'));
 
     // Assign wallets to closure
     _this._ = _;
@@ -28,6 +30,8 @@ const setupContracts = async (_this, accounts) => {
     _this.airdropWallet = airdropWallet;
     _this.account1 = account1;
     _this.account2 = account2;
+
+    _this.rate = rate;
 
     _this.token = await LittlePhilCoin.new();
     _this.crowdsale = await LittlePhilCrowdsale.new(
