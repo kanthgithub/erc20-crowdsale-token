@@ -150,9 +150,19 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
             else if(state == SaleState.PublicSaleTier4) {
                 state = SaleState.FinalisedPublicSale;
             }
+            else if(state == SaleState.Closed) {
+                crowdsaleClosed();
+            }
 
         }
 
+    }
+
+    /**
+     * Override for extensions that require an internal notification when the crowdsale has closed
+     */
+    function crowdsaleClosed () internal {
+        // optional override
     }
 
 }
