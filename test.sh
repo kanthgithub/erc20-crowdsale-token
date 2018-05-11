@@ -1,4 +1,4 @@
-ganache-cli -p 9545 > log &
+ganache-cli -e 10000000 > log &
 sleep 15
 cat log
 ps
