@@ -3,13 +3,14 @@ pragma solidity ^0.4.21;
 import "./TokenCappedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 
 
 /**
  * @title TieredCrowdsale
  * @dev Extension of Crowdsale contract that decreases the number of LPC tokens purchases dependent on the current number of tokens sold.
  */
-contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
+contract TieredCrowdsale is MintedCrowdsale, TokenCappedCrowdsale, Ownable {
 
     using SafeMath for uint256;
 
@@ -96,7 +97,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({tierRatePercentage:110, hardCap: 370000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
     }
 
     /**
@@ -123,6 +124,10 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
         // update cap when state changes
         tokenCap = getCurrentTierHardcap();
+
+        if(state == SaleState.Closed) {
+            crowdsaleClosed();
+        }
     }
 
     /**
@@ -133,25 +138,22 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
         if(capReached()) {
             if(state == SaleState.PrivateSale) {
-                state = SaleState.FinalisedPrivateSale;
+                setState(uint256(SaleState.FinalisedPrivateSale));
             }
             else if(state == SaleState.PreSale) {
-                state = SaleState.FinalisedPreSale;
+                setState(uint256(SaleState.FinalisedPreSale));
             }
             else if(state == SaleState.PublicSaleTier1) {
-                state = SaleState.PublicSaleTier2;
+                setState(uint256(SaleState.PublicSaleTier2));
             }
             else if(state == SaleState.PublicSaleTier2) {
-                state = SaleState.PublicSaleTier3;
+                setState(uint256(SaleState.PublicSaleTier3));
             }
             else if(state == SaleState.PublicSaleTier3) {
-                state = SaleState.PublicSaleTier4;
+                setState(uint256(SaleState.PublicSaleTier4));
             }
             else if(state == SaleState.PublicSaleTier4) {
-                state = SaleState.FinalisedPublicSale;
-            }
-            else if(state == SaleState.Closed) {
-                crowdsaleClosed();
+                setState(uint256(SaleState.FinalisedPublicSale));
             }
 
         }

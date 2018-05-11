@@ -70,7 +70,6 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets
-        _deliverTokens(supplierWallet, supplierTokens);
         _deliverTokens(projectWallet, projectTokens);
         _deliverTokens(advisorWallet, advisorTokens);
         _deliverTokens(bountyWallet, bountyTokens);

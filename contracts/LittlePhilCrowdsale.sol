@@ -2,11 +2,10 @@ pragma solidity ^0.4.21;
 
 import "./LittlePhilCoin.sol";
 import "./inheritable/InitialSupplyCrowdsale.sol";
-import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/WhitelistedCrowdsale.sol";
 import "./inheritable/TieredCrowdsale.sol";
 
-contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyCrowdsale, WhitelistedCrowdsale { 
+contract LittlePhilCrowdsale is TieredCrowdsale, InitialSupplyCrowdsale, WhitelistedCrowdsale { 
 
     // Constructor
     constructor(
@@ -32,7 +31,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyC
 
     // Called at the end of the crowdsale when it is eneded
     function crowdsaleClosed () internal {
-        unit256 remainingTokens = tokenCap.sub(tokensRaised);
+        uint256 remainingTokens = tokenCap.sub(tokensRaised);
         _deliverTokens(airdropWallet, remainingTokens);
     }
 
