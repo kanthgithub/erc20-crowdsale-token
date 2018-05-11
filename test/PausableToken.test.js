@@ -31,6 +31,8 @@ contract('Token is pausable', function (accounts) {
     await crowdsale.sendTransaction({ value: value, from: owner });
     await crowdsale.transferTokenOwnership(this._);
 
+    await this.token.unpause({ from:owner });
+
   });
 
   describe('pause', function () {

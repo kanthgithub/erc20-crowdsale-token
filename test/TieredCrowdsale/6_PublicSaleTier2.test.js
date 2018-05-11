@@ -58,7 +58,7 @@ contract('TieredCrowdsale', (accounts) => {
         });
 
         it("should auto switch between ICO states", async function () {
-            const cappedValue = value.add(ether(320000));
+            const cappedValue = value.add(ether(360000));
             const currentState = await this.crowdsale.state();
 
             await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
