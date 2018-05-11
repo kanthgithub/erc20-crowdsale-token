@@ -1,8 +1,6 @@
 /**
  * File for anything that needs to be shared between multiple test suits
  */
-const config = require('config');
-const crowdsaleCap = config.get("CROWDSALE_HARDCAP_WEI");
 
 const BigNumber = web3.BigNumber;
 
@@ -18,7 +16,6 @@ const setupContracts = async (_this, accounts) => {
 
     const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, account1, account2] = accounts;
     const rate = new BigNumber(1000);
-    const cap = new BigNumber(crowdsaleCap);
 
     // Assign wallets to closure
     _this._ = _;
@@ -37,11 +34,10 @@ const setupContracts = async (_this, accounts) => {
         rate,
         wallet,
         [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
-        _this.token.address,
-        cap
+        _this.token.address
     );
     await _this.token.transferOwnership(_this.crowdsale.address);
-    await _this.crowdsale.setupInitialSupply();
+    await _this.crowdsale.setupInitialState();
 
 };
 
