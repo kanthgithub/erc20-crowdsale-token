@@ -47,7 +47,7 @@ contract('TieredCrowdsale', (accounts) => {
         });
 
         it('should stop minting when cap is reached', async function () {
-            const cappedValue = value.add(ether(420000));
+            const cappedValue = value.add(ether(400000));
 
             await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
             await this.crowdsale.capReached().should.eventually.equal(true);
@@ -58,7 +58,7 @@ contract('TieredCrowdsale', (accounts) => {
         });
 
         it("should auto switch between ICO states", async function () {
-            const cappedValue = value.add(ether(420000));
+            const cappedValue = value.add(ether(400000));
             const currentState = await this.crowdsale.state();
 
             await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
@@ -73,7 +73,7 @@ contract('TieredCrowdsale', (accounts) => {
 
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
-            const expectedCap = new BigNumber(420000000 * 10 ** 18);
+            const expectedCap = new BigNumber(400000000 * 10 ** 18);
 
             cap.should.bignumber.equal(expectedCap);
         });

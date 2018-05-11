@@ -87,14 +87,14 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     */
     function createSalesTierConfigMap() private {
         tierConfigs [keccak256(SaleState.Initial)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PrivateSale)] = TierConfig({tierRatePercentage:100, hardCap: 420000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PrivateSale)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.FinalisedPrivateSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({tierRatePercentage:140, hardCap: 180000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({tierRatePercentage:140, hardCap: 160000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({tierRatePercentage:130, hardCap: 270000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({tierRatePercentage:120, hardCap: 340000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({tierRatePercentage:110, hardCap: 390000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({tierRatePercentage:100, hardCap: 420000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({tierRatePercentage:130, hardCap: 250000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({tierRatePercentage:120, hardCap: 320000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({tierRatePercentage:110, hardCap: 370000000 * (10 ** 18)});
+        tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
         tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
     }
