@@ -25,9 +25,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyC
     }
 
     // Ownership management
-    function transferOwnership(address _newOwner) public onlyOwner {
-        require(msg.sender == owner); // Only the owner of the crowdsale contract should be able to call this function.
-
+    function transferTokenOwnership(address _newOwner) public onlyOwner {
         // I assume the crowdsale contract holds a reference to the token contract.
         LittlePhilCoin(token).transferOwnership(_newOwner);
     }
