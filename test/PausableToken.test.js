@@ -22,6 +22,8 @@ contract('Token is pausable', function (accounts) {
     crowdsale = this.crowdsale;
     token = this.token;
 
+    await crowdsale.setState(1);
+
     await crowdsale.addToWhitelist(owner);
     await crowdsale.addToWhitelist(anotherAccount);
     await crowdsale.addToWhitelist(recipient);
