@@ -1,6 +1,13 @@
 const global = require('./utils/global');
 const assertRevert = require('./utils/assertRevert.js');
+const config = require("config");
 
+const BigNumber = web3.BigNumber;
+
+const should = require('chai')
+  .use(require('chai-as-promised'))
+  .use(require('chai-bignumber')(BigNumber))
+  .should();
 
 contract('Crowdsale is Ownable', function (accounts) {
     let crowdsale;
@@ -47,6 +54,36 @@ contract('Crowdsale is Ownable', function (accounts) {
             assert.isTrue(nextOwner === newOwner);
             assert.isFalse(newOwner === this._);
         });
+
+        it('should disallow LPC purchase when Crowdsale is not owner of the Token', async function() {
+            const rate = config.get('RATE')
+            const value = new web3.BigNumber(web3.toWei(10, 'wei'));
+            let owner = await crowdsale.owner();
+
+            // verify purchase goes through when crowdsale is owner
+            const previousBalance = await token.balanceOf(owner);
+            const expectedTokenAmount = value.mul(rate);
+            await crowdsale.setState(1);
+            await crowdsale.addToWhitelist(owner);
+            await crowdsale.sendTransaction({ value: value, from: owner });
+            const balance = await token.balanceOf(owner);
+            balance.should.be.bignumber.equal(expectedTokenAmount.add(previousBalance));
+
+            // transfer token ownership so crowdsale is not owner of token
+            const other = accounts[2];
+            await crowdsale.transferTokenOwnership(other);
+
+            // verify token owner is not crowdsale
+            const tokenOwner = await token.owner();
+            const crowdsaleOwner = await crowdsale.owner();
+            assert.isFalse(tokenOwner === crowdsaleOwner);
+            // and verify token owner is new 'other account'
+            assert.isTrue(tokenOwner === other);
+
+            // verify LPC purchase is reverted when crowdsale is not owner of token
+            await crowdsale.sendTransaction({ value: value, from: owner }).should.be.rejectedWith('revert');
+        });
+        
     });
 
 });
