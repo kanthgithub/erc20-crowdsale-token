@@ -62,8 +62,6 @@ contract('TieredCrowdsale', (accounts) => {
             const currentState = await this.crowdsale.state();
 
             await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
-            await this.crowdsale.capReached().should.eventually.equal(true);
-            await this.crowdsale.setState(9);
 
             const updatedState = await this.crowdsale.state();
             const expectedState = currentState.add(1);

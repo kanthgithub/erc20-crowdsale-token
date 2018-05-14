@@ -47,18 +47,18 @@ contract('TieredCrowdsale', (accounts) => {
         });
 
         it('should stop minting when cap is reached', async function () {
-            await this.crowdsale.capReached().should.eventually.equal(true);
+            await this.token.mint(this.account1, new BigNumber(10000), { from: this._ }).should.be.rejected;
         });
 
         it('should accept transactions based on state', async function () {
             await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejected;
         });
 
-        it('should auto switch between ICO states', async function () { });
+        it("should auto switch between ICO states", async function () {});
 
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
-            const expectedCap = new BigNumber(0);
+            const expectedCap = new BigNumber(400000000 * 10 ** 18);
 
             cap.should.bignumber.equal(expectedCap);
         });

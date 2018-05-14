@@ -55,7 +55,7 @@ contract('TieredCrowdsale', (accounts) => {
             await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejected;
         });
 
-        it('should auto switch between ICO states', async function () { });
+        it('should auto switch between ICO states', async function () {});
 
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();

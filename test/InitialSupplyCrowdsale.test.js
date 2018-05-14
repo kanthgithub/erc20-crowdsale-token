@@ -15,15 +15,6 @@ contract('InitialSupplyCrowdsale', (accounts) => {
 
     describe('have correct initial balances', function () {
 
-        it('supplier account has 400M balance', async function() {
-            const expectedBalance = new BigNumber(400000000e+18);
-            const address = await this.crowdsale.supplierWallet();
-            const balance = await this.token.balanceOf(address);
-            const supplyCount = await this.crowdsale.supplierTokens();
-            balance.should.be.bignumber.equal(supplyCount);
-            balance.should.be.bignumber.equal(expectedBalance);
-        });
-
         it('project account has 150M balance', async function() {
             const expectedBalance = new BigNumber(150000000e+18);
             const address = await this.crowdsale.projectWallet();

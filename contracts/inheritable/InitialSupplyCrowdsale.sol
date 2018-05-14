@@ -13,7 +13,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     uint256 public constant decimals = 18;
 
     // Wallet properties
-    address public supplierWallet;
+    address public companyWallet;
     address public teamWallet;
     address public projectWallet;
     address public advisorWallet;
@@ -25,8 +25,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     TokenTimelock public teamTimeLock2;
 
     // Reserved tokens
-    uint256 public constant supplierTokens   = 400000000 * (10 ** decimals);
-    uint256 public constant littlePhilTokens = 150000000 * (10 ** decimals);
+    uint256 public constant companyTokens    = 150000000 * (10 ** decimals);
     uint256 public constant teamTokens       = 150000000 * (10 ** decimals);
     uint256 public constant projectTokens    = 150000000 * (10 ** decimals);
     uint256 public constant advisorTokens    = 100000000 * (10 ** decimals);
@@ -34,16 +33,16 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     uint256 public constant airdropTokens    =  20000000 * (10 ** decimals);
 
     constructor(
-        address[6] _supplyWallets
+        address[6] _wallets
     ) public {
-        address _supplierWallet = _supplyWallets[0];
-        address _teamWallet     = _supplyWallets[1];
-        address _projectWallet  = _supplyWallets[2];
-        address _advisorWallet  = _supplyWallets[3];
-        address _bountyWallet   = _supplyWallets[4];
-        address _airdropWallet  = _supplyWallets[5];
+        address _companyWallet  = _wallets[0];
+        address _teamWallet     = _wallets[1];
+        address _projectWallet  = _wallets[2];
+        address _advisorWallet  = _wallets[3];
+        address _bountyWallet   = _wallets[4];
+        address _airdropWallet  = _wallets[5];
 
-        require(_supplierWallet != address(0));
+        require(_companyWallet != address(0));
         require(_teamWallet != address(0));
         require(_projectWallet != address(0));
         require(_advisorWallet != address(0));
@@ -51,7 +50,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         require(_airdropWallet != address(0));
 
         // Set reserved wallets
-        supplierWallet = _supplierWallet;
+        companyWallet = _companyWallet;
         teamWallet = _teamWallet;
         projectWallet = _projectWallet;
         advisorWallet = _advisorWallet;
@@ -70,7 +69,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets
-        _deliverTokens(supplierWallet, supplierTokens);
+        _deliverTokens(companyWallet, companyTokens);
         _deliverTokens(projectWallet, projectTokens);
         _deliverTokens(advisorWallet, advisorTokens);
         _deliverTokens(bountyWallet, bountyTokens);

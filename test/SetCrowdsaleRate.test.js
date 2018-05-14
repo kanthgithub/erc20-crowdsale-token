@@ -51,8 +51,9 @@ contract('Crowdsale', function (accounts) {
 
             it('is the new value', async () => {
                 const newRate = 5;
-                crowdsale.setRate(newRate);
+                await crowdsale.setRate(newRate);
                 const deployedRate = await crowdsale.rate();
+
                 deployedRate.should.be.bignumber.equal(newRate);
             });
 
@@ -75,7 +76,7 @@ contract('Crowdsale', function (accounts) {
                 let balance;
                 const initialRate = 7;
                 const newRate = 8;
-                const value = new web3.BigNumber(web3.toWei(10, 'wei'));
+                const value = new web3.BigNumber(web3.toWei(200000000000000000, "wei"));
 
                 previousBalance = await token.balanceOf(owner);
                 await crowdsale.setRate(initialRate);

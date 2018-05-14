@@ -16,13 +16,13 @@ const LittlePhilCrowdsale = artifacts.require("LittlePhilCrowdsale.sol");
  */
 const setupContracts = async (_this, accounts) => {
 
-    const [_, wallet, supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, account1, account2] = accounts;
+    const [_, wallet, companyWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet, account1, account2] = accounts;
     const rate = new BigNumber(config.get('RATE'));
 
     // Assign wallets to closure
     _this._ = _;
     _this.wallet = wallet;
-    _this.supplierWallet = supplierWallet;
+    _this.companyWallet = companyWallet;
     _this.teamWallet = teamWallet;
     _this.projectWallet = projectWallet;
     _this.advisorWallet = advisorWallet;
@@ -37,7 +37,7 @@ const setupContracts = async (_this, accounts) => {
     _this.crowdsale = await LittlePhilCrowdsale.new(
         rate,
         wallet,
-        [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
+        [companyWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
         _this.token.address
     );
     await _this.token.transferOwnership(_this.crowdsale.address);

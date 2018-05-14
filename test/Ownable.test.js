@@ -57,15 +57,17 @@ contract('Crowdsale is Ownable', function (accounts) {
 
         it('should disallow LPC purchase when Crowdsale is not owner of the Token', async function() {
             const rate = config.get('RATE')
-            const value = new web3.BigNumber(web3.toWei(10, 'wei'));
+            const value = new web3.BigNumber(web3.toWei(200000000000000000, "wei"));
             let owner = await crowdsale.owner();
 
             // verify purchase goes through when crowdsale is owner
             const previousBalance = await token.balanceOf(owner);
             const expectedTokenAmount = value.mul(rate);
+
             await crowdsale.setState(1);
             await crowdsale.addToWhitelist(owner);
             await crowdsale.sendTransaction({ value: value, from: owner });
+
             const balance = await token.balanceOf(owner);
             balance.should.be.bignumber.equal(expectedTokenAmount.add(previousBalance));
 

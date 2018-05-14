@@ -46,24 +46,15 @@ contract('TieredCrowdsale', (accounts) => {
             endBal.should.bignumber.equal(startBal.add(value));
         });
 
-        it('should stop minting when cap is reached', async function () {
-            const cappedValue = value.add(ether(370000));
-
-            await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
-            await this.crowdsale.capReached().should.eventually.equal(true);
-        });
-
         it('should accept transactions based on state', async function () {
             await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.fulfilled;
         });
 
         it("should auto switch between ICO states", async function () {
-            const cappedValue = value.add(ether(370000));
+            const cappedValue = value.add(ether(400000));
             const currentState = await this.crowdsale.state();
 
             await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
-            await this.crowdsale.capReached().should.eventually.equal(true);
-            await this.crowdsale.setState(8);
 
             const updatedState = await this.crowdsale.state();
             const expectedState = currentState.add(1);
