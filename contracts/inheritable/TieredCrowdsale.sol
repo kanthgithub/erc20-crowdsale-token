@@ -144,6 +144,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
             tierRatePercentage:0,
             hardCap: 400000000 * (10 ** 18)
         });
+        
     }
 
     /**
@@ -174,6 +175,10 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         if(state == SaleState.Closed) {
             crowdsaleClosed();
         }
+    }
+
+    function getState() public view returns (string) {
+        return tierConfigs[keccak256(state)].stateName;
     }
 
     function getState() public view returns (string) {
