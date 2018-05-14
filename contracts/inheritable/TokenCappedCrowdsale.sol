@@ -31,6 +31,7 @@ contract TokenCappedCrowdsale is Crowdsale {
      * Accumulate the purchased tokens to the total raised
      */
     function _updatePurchasingState(address _beneficiary, uint256 _weiAmount) internal {
+        super._updatePurchasingState(_beneficiary, _weiAmount);
         uint256 purchasedTokens = _getTokenAmount(_weiAmount);
         tokensRaised = tokensRaised.add(purchasedTokens);
 

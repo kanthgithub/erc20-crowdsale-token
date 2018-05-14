@@ -6,7 +6,7 @@ const LittlePhilCoin = artifacts.require("./LittlePhilCoin.sol");
 module.exports = function(deployer) {
     const rate = new web3.BigNumber(config.get('RATE'));
     const wallet = config.get('MULTISIG_WALLET'); // receiver multisig wallet for Eth
-    const supplierWallet = config.get('SUPPLIER_WALLET');
+    const companyWallet = config.get('COMPANY_WALLET');
     const teamWallet = config.get('TEAM_WALLET');
     const projectWallet = config.get('PROJECT_WALLET');
     const advisorWallet = config.get('ADVISOR_WALLET');
@@ -22,7 +22,7 @@ module.exports = function(deployer) {
         LittlePhilCrowdsale,
         rate,
         wallet,
-        [supplierWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
+        [companyWallet, teamWallet, projectWallet, advisorWallet, bountyWallet, airdropWallet],
         LittlePhilCoin.address
       );
     });

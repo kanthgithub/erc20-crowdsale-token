@@ -3,14 +3,13 @@ pragma solidity ^0.4.21;
 import "./TokenCappedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 
 
 /**
  * @title TieredCrowdsale
  * @dev Extension of Crowdsale contract that decreases the number of LPC tokens purchases dependent on the current number of tokens sold.
  */
-contract TieredCrowdsale is MintedCrowdsale, TokenCappedCrowdsale, Ownable {
+contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
 
     using SafeMath for uint256;
 
@@ -43,6 +42,7 @@ contract TieredCrowdsale is MintedCrowdsale, TokenCappedCrowdsale, Ownable {
     * checks the state when validating a purchase
     */
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal {
+        super._preValidatePurchase(_beneficiary, _weiAmount);
         require(
             state == SaleState.PrivateSale ||
             state == SaleState.PreSale ||
@@ -138,22 +138,28 @@ contract TieredCrowdsale is MintedCrowdsale, TokenCappedCrowdsale, Ownable {
 
         if(capReached()) {
             if(state == SaleState.PrivateSale) {
-                setState(uint256(SaleState.FinalisedPrivateSale));
+                state = SaleState.FinalisedPrivateSale;
+                tokenCap = getCurrentTierHardcap();
             }
             else if(state == SaleState.PreSale) {
-                setState(uint256(SaleState.FinalisedPreSale));
+                state = SaleState.FinalisedPreSale;
+                tokenCap = getCurrentTierHardcap();
             }
             else if(state == SaleState.PublicSaleTier1) {
-                setState(uint256(SaleState.PublicSaleTier2));
+                state = SaleState.PublicSaleTier2;
+                tokenCap = getCurrentTierHardcap();
             }
             else if(state == SaleState.PublicSaleTier2) {
-                setState(uint256(SaleState.PublicSaleTier3));
+                state = SaleState.PublicSaleTier3;
+                tokenCap = getCurrentTierHardcap();
             }
             else if(state == SaleState.PublicSaleTier3) {
-                setState(uint256(SaleState.PublicSaleTier4));
+                state = SaleState.PublicSaleTier4;
+                tokenCap = getCurrentTierHardcap();
             }
             else if(state == SaleState.PublicSaleTier4) {
-                setState(uint256(SaleState.FinalisedPublicSale));
+                state = SaleState.FinalisedPublicSale;
+                tokenCap = getCurrentTierHardcap();
             }
 
         }

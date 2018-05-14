@@ -46,30 +46,20 @@ contract('TieredCrowdsale', (accounts) => {
             endBal.should.bignumber.equal(startBal.add(value));
         });
 
-        it('should stop minting when cap is reached', async function () {
-            const cappedValue = value.add(ether(250000));
-
-            await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
-            await this.crowdsale.capReached().should.eventually.equal(true);
-        });
-
         it('should accept transactions based on state', async function () {
             await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.fulfilled;
         });
 
-        it("should auto switch between ICO states", async function() {
-            const cappedValue = value.add(ether(300000));
+        it("should auto switch between ICO states", async function () {
+            const cappedValue = value.add(ether(400000));
             const currentState = await this.crowdsale.state();
 
-            await this.crowdsale.buyTokens(this.account1, {value: cappedValue, from: this.account1}).should.be.fulfilled;
-            await this.crowdsale.capReached().should.eventually.equal(true);
-            await this.crowdsale.setState(6);
+            await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 }).should.be.fulfilled;
 
             const updatedState = await this.crowdsale.state();
             const expectedState = currentState.add(1);
 
-            expectedState.should.bignumber.equal(updatedState);
-        });
+            expectedState.should.bignumber.equal(updatedState);});
 
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
