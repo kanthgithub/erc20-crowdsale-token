@@ -28,7 +28,7 @@ contract('Crowdsale', function (accounts) {
 
         it('has a default of ' + config.get('RATE'), async () => {
             const deployedRate = await crowdsale.rate();
-            assert.equal(deployedRate, config.get('RATE'));
+            deployedRate.should.be.bignumber.equal(new web3.BigNumber(config.get('RATE')));
         });
 
         it('can only be changed by owner ', async () => {
@@ -53,7 +53,7 @@ contract('Crowdsale', function (accounts) {
                 const newRate = 5;
                 crowdsale.setRate(newRate);
                 const deployedRate = await crowdsale.rate();
-                assert.equal(deployedRate, newRate);
+                deployedRate.should.be.bignumber.equal(newRate);
             });
 
             it('cannot be changed to 0', async () => {
