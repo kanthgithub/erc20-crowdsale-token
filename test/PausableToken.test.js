@@ -15,7 +15,7 @@ contract('Token is pausable', function (accounts) {
   const owner = accounts[0];
   const anotherAccount = accounts[1];
   const recipient = accounts[2];
-  const value = new web3.BigNumber(web3.toWei(10, 'wei'));
+  const value = new web3.BigNumber(web3.toWei(200000000000000000, 'wei'));
 
   beforeEach(async function () {
     await global.setupContracts(this, accounts);

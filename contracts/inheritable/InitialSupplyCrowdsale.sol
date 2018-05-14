@@ -25,7 +25,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     TokenTimelock public teamTimeLock2;
 
     // Reserved tokens
-    uint256 public constant companyTokens = 150000000 * (10 ** decimals);
+    uint256 public constant companyTokens    = 150000000 * (10 ** decimals);
     uint256 public constant teamTokens       = 150000000 * (10 ** decimals);
     uint256 public constant projectTokens    = 150000000 * (10 ** decimals);
     uint256 public constant advisorTokens    = 100000000 * (10 ** decimals);

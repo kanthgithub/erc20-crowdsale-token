@@ -32,6 +32,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     SaleState public state = SaleState.Initial;
 
     struct TierConfig {
+        string stateName;
         uint256 tierRatePercentage;
         uint256 hardCap;
     }
@@ -87,17 +88,62 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     * to be called by the constructor.
     */
     function createSalesTierConfigMap() private {
-        tierConfigs [keccak256(SaleState.Initial)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PrivateSale)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPrivateSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({tierRatePercentage:140, hardCap: 160000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({tierRatePercentage:130, hardCap: 250000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({tierRatePercentage:120, hardCap: 320000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({tierRatePercentage:110, hardCap: 370000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({tierRatePercentage:0, hardCap: 0 * (10 ** 18)});
-        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({tierRatePercentage:100, hardCap: 400000000 * (10 ** 18)});
+
+        tierConfigs [keccak256(SaleState.Initial)] = TierConfig({
+            stateName: "Initial",
+            tierRatePercentage:0,
+            hardCap: 0 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PrivateSale)] = TierConfig({
+            stateName: "PrivateSale",
+            tierRatePercentage:100,
+            hardCap: 400000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.FinalisedPrivateSale)] = TierConfig({
+            stateName: "FinalisedPrivateSale",
+            tierRatePercentage:0,
+            hardCap: 0 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({
+            stateName: "PreSale",
+            tierRatePercentage:140,
+            hardCap: 160000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({
+            stateName: "FinalisedPreSale",
+            tierRatePercentage:0,
+            hardCap: 0 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({
+            stateName: "PublicSaleTier1",
+            tierRatePercentage:130,
+            hardCap: 250000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({
+            stateName: "PublicSaleTier2",
+            tierRatePercentage:120,
+            hardCap: 320000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({
+            stateName: "PublicSaleTier3",
+            tierRatePercentage:110,
+            hardCap: 370000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({
+            stateName: "PublicSaleTier4",
+            tierRatePercentage:100,
+            hardCap: 400000000 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.FinalisedPublicSale)] = TierConfig({
+            stateName: "FinalisedPublicSale",
+            tierRatePercentage:0,
+            hardCap: 0 * (10 ** 18)
+            });
+        tierConfigs [keccak256(SaleState.Closed)] = TierConfig({
+            stateName: "Closed",
+            tierRatePercentage:0,
+            hardCap: 400000000 * (10 ** 18)
+            });
     }
 
     /**
@@ -128,6 +174,10 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         if(state == SaleState.Closed) {
             crowdsaleClosed();
         }
+    }
+
+    function getState() public view returns (string) {
+        return tierConfigs[keccak256(state)].stateName;
     }
 
     /**

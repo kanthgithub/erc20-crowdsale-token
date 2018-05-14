@@ -8,7 +8,7 @@ require('chai')
   .should();
 
 contract('WhitelistedCrowdsale', function (accounts) {
-  const value = new web3.BigNumber(web3.toWei(3000000000000000, 'wei'));
+const value = new web3.BigNumber(web3.toWei(200000000000000000, 'wei'));
 
   let authorized;
   let unauthorized;
