@@ -181,10 +181,6 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         return tierConfigs[keccak256(state)].stateName;
     }
 
-    function getState() public view returns (string) {
-        return tierConfigs[keccak256(state)].stateName;
-    }
-
     /**
     * @dev only allow onwer to modify the current SaleState
     */

@@ -51,8 +51,9 @@ contract('Crowdsale', function (accounts) {
 
             it('is the new value', async () => {
                 const newRate = 5;
-                crowdsale.setRate(newRate);
+                await crowdsale.setRate(newRate);
                 const deployedRate = await crowdsale.rate();
+
                 deployedRate.should.be.bignumber.equal(newRate);
             });
 
