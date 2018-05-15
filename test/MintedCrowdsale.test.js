@@ -66,4 +66,10 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
         });
     });
 
+    describe('reject minting from non-owner', function () {
+        it("should reject minting from non-owner", async function () {
+            await this.token.mint(this.account1, value, { from: this.account2 }).should.be.rejected;
+        });
+    });
+
 });
