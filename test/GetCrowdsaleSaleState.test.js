@@ -8,7 +8,7 @@ const should = require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract('Crowdsale', function (accounts) {
+contract('TieredCrowdsale', function (accounts) {
     let owner;
     let crowdsale;
 
@@ -78,6 +78,22 @@ contract('Crowdsale', function (accounts) {
         it('is \'Closed\' when state is set to 10', async () => {
             await crowdsale.setState(10);
             assert.equal(await crowdsale.getState(), "Closed");
+        });
+
+    });
+
+    describe('State should not be allowed outside enum values', () => {
+
+        beforeEach(async function () {
+            await global.setupContracts(this, accounts);
+        });
+
+        it('not 11', async function () {
+            await this.crowdsale.setState(11).should.be.rejectedWith('invalid opcode');
+        });
+    
+        it('not -1', async function () {
+            await this.crowdsale.setState(-1).should.be.rejectedWith('invalid opcode');
         });
 
     });
