@@ -40,6 +40,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyC
     function crowdsaleClosed () internal {
         uint256 remainingTokens = tokenCap.sub(tokensRaised);
         _deliverTokens(airdropWallet, remainingTokens);
+        LittlePhilCoin(token).finishMinting();
     }
 
     /**
