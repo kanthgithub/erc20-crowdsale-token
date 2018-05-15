@@ -65,7 +65,7 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     /**
      * Function
      */
-    function setupInitialSupply() public {
+    function setupInitialSupply() public onlyOwner {
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets

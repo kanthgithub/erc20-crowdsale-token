@@ -83,4 +83,16 @@ contract('InitialSupplyCrowdsale', (accounts) => {
 
     });
 
+    describe('check for non-owner changes to setupInitialSupply', function () {
+
+        it('should reject non-owner calls to setupInitialSupply', async function() {
+            await this.crowdsale.setupInitialSupply({from: accounts[1]}).should.be.rejected;
+        });
+
+        it('should accept owner calls to setupInitialSupply', async function () {
+            await this.crowdsale.setupInitialSupply({ from: accounts[0] }).should.be.fulfilled;
+        });
+
+    });
+
 });
