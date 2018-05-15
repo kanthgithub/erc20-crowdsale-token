@@ -32,6 +32,8 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     uint256 public constant bountyTokens     =  30000000 * (10 ** decimals);
     uint256 public constant airdropTokens    =  20000000 * (10 ** decimals);
 
+    bool private isInitialised = false;
+
     constructor(
         address[6] _wallets
     ) public {
@@ -65,7 +67,8 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     /**
      * Function
      */
-    function setupInitialSupply() public {
+    function setupInitialSupply() internal onlyOwner {
+        require(isInitialised == false);
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets
@@ -76,6 +79,8 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         _deliverTokens(airdropWallet, airdropTokens);
         _deliverTokens(address(teamTimeLock1), teamTokensSplit);
         _deliverTokens(address(teamTimeLock2), teamTokensSplit);
+
+        isInitialised = true;
     }
 
 }

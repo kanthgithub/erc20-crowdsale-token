@@ -83,4 +83,22 @@ contract('InitialSupplyCrowdsale', (accounts) => {
 
     });
 
+    describe('check for calls to setupInitialSupply', function () {
+
+
+        it('should reject calls to setupInitialSupply', async function() {
+
+            try {
+                await this.crowdsale.setupInitialSupply({from: accounts[1]});
+            } catch(err) {
+                expect(err.message).to.equal("this.crowdsale.setupInitialSupply is not a function");
+            }
+        });
+
+        it('should fail on multiple calls to setupInitialState', async function () {
+            await this.crowdsale.setupInitialState().should.be.rejectedWith('revert');
+        });
+
+    });
+
 });
