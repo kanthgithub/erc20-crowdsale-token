@@ -83,14 +83,20 @@ contract('InitialSupplyCrowdsale', (accounts) => {
 
     });
 
-    describe('check for non-owner changes to setupInitialSupply', function () {
+    describe('check for calls to setupInitialSupply', function () {
 
-        it('should reject non-owner calls to setupInitialSupply', async function() {
-            await this.crowdsale.setupInitialSupply({from: accounts[1]}).should.be.rejected;
+
+        it('should reject calls to setupInitialSupply', async function() {
+
+            try {
+                await this.crowdsale.setupInitialSupply({from: accounts[1]});
+            } catch(err) {
+                expect(err.message).to.equal("this.crowdsale.setupInitialSupply is not a function");
+            }
         });
 
-        it('should accept owner calls to setupInitialSupply', async function () {
-            await this.crowdsale.setupInitialSupply({ from: accounts[0] }).should.be.fulfilled;
+        it('should fail on multiple calls to setupInitialState', async function () {
+            await this.crowdsale.setupInitialState().should.be.rejectedWith('revert');
         });
 
     });
