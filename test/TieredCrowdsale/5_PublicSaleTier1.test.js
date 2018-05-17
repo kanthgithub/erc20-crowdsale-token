@@ -63,7 +63,7 @@ contract('TieredCrowdsale', (accounts) => {
 
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
-            const expectedCap = new BigNumber(250000000 * (10 ** 18));
+            const expectedCap = new BigNumber(265000000 * (10 ** 18));
 
             cap.should.bignumber.equal(expectedCap);
         });
