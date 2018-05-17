@@ -22,10 +22,10 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         FinalisedPrivateSale, // Close private sale
         PreSale,              // Pre sale ICO (40% bonus LPC hard-capped at 180 million tokens)
         FinalisedPreSale,     // Close presale
-        PublicSaleTier1,      // Tier 1 ICO public sale (30% bonus LPC capped at 90 million tokens)
-        PublicSaleTier2,      // Tier 2 ICO public sale (20% bonus LPC capped at 70 million tokens)
-        PublicSaleTier3,      // Tier 3 ICO public sale (10% bonus LPC capped at 50 million tokens)
-        PublicSaleTier4,      // Tier 4 ICO public sale (standard rate capped at 30 million tokens)
+        PublicSaleTier1,      // Tier 1 ICO public sale (30% bonus LPC capped at 85 million tokens)
+        PublicSaleTier2,      // Tier 2 ICO public sale (20% bonus LPC capped at 65 million tokens)
+        PublicSaleTier3,      // Tier 3 ICO public sale (10% bonus LPC capped at 45 million tokens)
+        PublicSaleTier4,      // Tier 4 ICO public sale (standard rate capped at 25 million tokens)
         FinalisedPublicSale,  // Close public sale
         Closed                // ICO has finished, all tokens must have been claimed
     }
@@ -107,7 +107,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         tierConfigs [keccak256(SaleState.PreSale)] = TierConfig({
             stateName: "PreSale",
             tierRatePercentage:140,
-            hardCap: 160000000 * (10 ** 18)
+            hardCap: 180000000 * (10 ** 18)
         });
         tierConfigs [keccak256(SaleState.FinalisedPreSale)] = TierConfig({
             stateName: "FinalisedPreSale",
@@ -117,17 +117,17 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
         tierConfigs [keccak256(SaleState.PublicSaleTier1)] = TierConfig({
             stateName: "PublicSaleTier1",
             tierRatePercentage:130,
-            hardCap: 250000000 * (10 ** 18)
+            hardCap: 265000000 * (10 ** 18)
         });
         tierConfigs [keccak256(SaleState.PublicSaleTier2)] = TierConfig({
             stateName: "PublicSaleTier2",
             tierRatePercentage:120,
-            hardCap: 320000000 * (10 ** 18)
+            hardCap: 330000000 * (10 ** 18)
         });
         tierConfigs [keccak256(SaleState.PublicSaleTier3)] = TierConfig({
             stateName: "PublicSaleTier3",
             tierRatePercentage:110,
-            hardCap: 370000000 * (10 ** 18)
+            hardCap: 375000000 * (10 ** 18)
         });
         tierConfigs [keccak256(SaleState.PublicSaleTier4)] = TierConfig({
             stateName: "PublicSaleTier4",

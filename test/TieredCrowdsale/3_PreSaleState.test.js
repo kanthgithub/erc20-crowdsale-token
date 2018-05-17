@@ -69,9 +69,29 @@ contract('TieredCrowdsale', (accounts) => {
             expectedState.should.bignumber.equal(updatedState);
         });
 
+        it('emits a CapOverflow event', async function () {
+            // event CapOverflow(address indexed sender, uint256 weiAmount, uint256 recievedTokens, uint256 date);
+            const cappedValue = value.add(ether(400000));
+
+            const {logs} = await this.crowdsale.buyTokens(this.account1, { value: cappedValue, from: this.account1 });
+            const event = logs.find(e => e.event == 'CapOverflow');
+
+            should.exist(event);
+            event.args.sender.should.be.equal(this.account1);
+            event.args.weiAmount.should.be.bignumber.equal(cappedValue);
+            // event.args.receivedTokens.should.be.big.number.equal(cappedValue.multipliedBy(rate));
+            console.log("===> LPC purchase   : " + cappedValue.mul(rate).toFormat(0));
+            console.log("===> receivedTokens : " + event.args.receivedTokens);
+            console.log("===> purchasedTokens: " + event.args.purchasedTokens);
+            console.log("===> date           : " + event.args.date);
+            console.log("===> now            : " + Date.now());
+
+        });
+
+
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
-            const expectedCap = new BigNumber(160000000 * (10 ** 18));
+            const expectedCap = new BigNumber(180000000 * (10 ** 18));
 
             cap.should.bignumber.equal(expectedCap);
         });
