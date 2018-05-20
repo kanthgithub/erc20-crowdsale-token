@@ -71,7 +71,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256) {
         uint256 currentTierRate = getCurrentTierRatePercentage();
         
-        uint256 requestedTokenAmount = _weiAmount.mul(rate).mul(currentTierRate);
+        uint256 requestedTokenAmount = _weiAmount.mul(rate).mul(currentTierRate).div(100);
 
         uint256 remainingTokens = tokenCap.sub(tokensRaised);
 
@@ -80,7 +80,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
             return remainingTokens;
         }
     
-        return requestedTokenAmount.div(100);
+        return requestedTokenAmount;
     }
 
     /**
