@@ -13,11 +13,11 @@ contract TokenCappedCrowdsale is Crowdsale {
 
     uint256 public tokenCap = 0;
 
-    // Amount of wei raised
+    // Amount of LPC raised
     uint256 public tokensRaised = 0;
     
     // event for manual refund of cap overflow
-    event CapOverflow(address indexed sender, uint256 weiAmount, uint256 recievedTokens, uint256 date);
+    event CapOverflow(address indexed sender, uint256 weiAmount, uint256 receivedTokens, uint256 date);
 
     /**
      * Checks whether the tokenCap has been reached. 
