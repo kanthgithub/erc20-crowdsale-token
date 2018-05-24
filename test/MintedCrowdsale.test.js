@@ -14,7 +14,7 @@ const should = require('chai')
 
 contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
     const rate = new BigNumber(1000);
-    const value = ether(12);
+    const value = ether(0.3);
 
     const expectedTokenAmount = value.mul(rate);
 

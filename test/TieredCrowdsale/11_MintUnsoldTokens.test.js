@@ -13,7 +13,7 @@ const should = require('chai')
 
 contract('TieredCrowdsale', (accounts) => {
     const rate = new BigNumber(1000);
-    const value = ether(12);
+    const value = ether(0.3);
 
     const expectedTokenAmount = value.mul(rate);
 
@@ -45,7 +45,14 @@ contract('TieredCrowdsale', (accounts) => {
             const currentTokens = await this.token.balanceOf(await this.crowdsale.airdropWallet());
             const buyValue = ether(1000);
 
-            await this.crowdsale.buyTokens(this.account1, { value: buyValue, from: this.account1 }).should.be.fulfilled;
+            tierBonusRate = await this.crowdsale.getCurrentTierRatePercentage();
+            tierHardcap = await this.crowdsale.getCurrentTierHardcap();
+            tokensPrePurchase = await this.crowdsale.tokensRaised();
+
+            purchaseTarget = tierHardcap.minus(tokensPrePurchase).div(2);
+            purchasePrice = purchaseTarget.div(rate).div(tierBonusRate).mul(100);
+            await this.crowdsale.buyTokens(this.account1, { value: purchasePrice, from: this.account1 }).should.be.fulfilled;
+            tokensPostPurchase = await this.crowdsale.tokensRaised();
             await this.crowdsale.setState(10);
 
             const cap = await this.crowdsale.tokenCap();

@@ -10,7 +10,7 @@ const should = require('chai')
     .should();
 
 contract('CappedToken', (accounts) => {
-    const value = ether(12);
+    const value = ether(0.3);
     const owner = accounts[0];
 
     beforeEach(async function () {

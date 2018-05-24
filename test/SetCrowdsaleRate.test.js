@@ -36,18 +36,12 @@ contract('Crowdsale', function (accounts) {
             await crowdsale.setRate(newRate, {from: owner}).should.not.be.rejected;
         });
 
-
         it('cannot be changed by non-owner ', async () => {
             const newRate = 3;
             await crowdsale.setRate(newRate, {from: notOwner}).should.be.rejectedWith('revert');
         });
 
         describe('when changed', () => {
-
-            it('should not be rejected', async () => {
-                const newRate = 4;
-                await crowdsale.setRate(newRate, {from: notOwner}).should.be.rejected;
-            });
 
             it('is the new value', async () => {
                 const newRate = 5;

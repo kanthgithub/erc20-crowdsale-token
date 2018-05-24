@@ -13,7 +13,7 @@ const should = require('chai')
 
 contract('TieredCrowdsale', (accounts) => {
     const rate = new BigNumber(1000);
-    const value = ether(12);
+    const value = ether(0.3);
 
     const expectedTokenAmount = value.mul(rate);
 
@@ -30,37 +30,27 @@ contract('TieredCrowdsale', (accounts) => {
 
     describe('Closed SaleState', function () {
 
-        it('should return correct LPC amount', async function () {
-            const expectedValue = new BigNumber(0);
-
-            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejected;
-            (await this.token.balanceOf(this.account1)).should.bignumber.equal(expectedValue);
-        });
-
-        it('should receive eth in multisig wallet', async function () {
-            const startBal = await web3.eth.getBalance(this.wallet);
-
-            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejected;
-
-            const endBal = await web3.eth.getBalance(this.wallet);
-            startBal.should.bignumber.equal(endBal);
-        });
-
-        it('should stop minting when cap is reached', async function () {
-            await this.token.mint(this.account1, new BigNumber(10000), { from: this._ }).should.be.rejected;
-        });
-
-        it('should accept transactions based on state', async function () {
-            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejected;
-        });
-
-        it("should auto switch between ICO states", async function () {});
-
         it('should return correct integer value for cap values', async function () {
             const cap = await this.crowdsale.getCurrentTierHardcap();
             const expectedCap = new BigNumber(400000000 * 10 ** 18);
 
             cap.should.bignumber.equal(expectedCap);
+        });
+
+        it('should not accept transactions', async function () {
+            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejectedWith('revert');
+        });
+
+        it('should not return LPC', async function () {
+            const startBal = await this.token.balanceOf(this.account1);
+            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejectedWith('revert');
+            (await this.token.balanceOf(this.account1)).should.bignumber.equal(startBal);
+        });
+
+        it('should not receive ETH in multisig wallet', async function () {
+            const startBal = await web3.eth.getBalance(this.wallet);
+            await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.rejectedWith('revert');
+            (await web3.eth.getBalance(this.wallet)).should.bignumber.equal(startBal);
         });
 
     });
