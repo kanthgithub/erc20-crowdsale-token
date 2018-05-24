@@ -13,7 +13,7 @@ const should = require('chai')
 
 contract('TieredCrowdsale', (accounts) => {
     const rate = new BigNumber(1000);
-    const value = ether(12);
+    const value = ether(0.3);
     const expectedTokenAmount = value.mul(rate);
 
     beforeEach(async function () {
@@ -105,15 +105,12 @@ contract('TieredCrowdsale', (accounts) => {
             // });
             
             it('should emit a CapOverflow event', async function () {
-
                 const {logs} = await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 const event = logs.find(e => e.event == 'CapOverflow');
                 should.exist(event);
-
             });
 
             it('expected LPC should be less than LPC received', async function () {
-
                 const tokensPrePurchase = await this.crowdsale.tokensRaised();
                 const {logs} = await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 const event = logs.find(e => e.event == 'CapOverflow');
@@ -122,20 +119,16 @@ contract('TieredCrowdsale', (accounts) => {
                 const expectedTokens = (purchaseExceedingCap).mul(rate).mul(tierBonusRate).div(100);
                 const actualTokens = tokensPostPurchase.minus(tokensPrePurchase);
                 actualTokens.should.be.bignumber.lessThan(expectedTokens);
-
             });
 
             it('should not have any tokens remaining for tier', async function () {
-
                 await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 tokensPostPurchase = await this.crowdsale.tokensRaised();
                 const tokensToCap = tierHardcap.minus(tokensPostPurchase);
                 tokensToCap.should.be.bignumber.equal(new BigNumber(0));
-
             });
 
             it('should emit correct CapOverflow event values', async function () {
-
                 const tokensPrePurchase = await this.crowdsale.tokensRaised();
                 const {logs} = await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 const event = logs.find(e => e.event == 'CapOverflow');
@@ -147,23 +140,19 @@ contract('TieredCrowdsale', (accounts) => {
                 // Note: this doesn't seem to work when tested on a remote test server.  Commented out.
                 // const dateNow = new BigNumber(Date.now()).div(1000);
                 // (event.args.date.minus(dateNow)).abs().should.be.bignumber.lessThan(300);
-
             });
 
             it('should stop minting', async function () {
-
                 await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 (await this.crowdsale.capReached()).should.equal(true);
             });
 
             it('should auto-switch to next ICO state', async function () {
-
                 const currentState = await this.crowdsale.state();
                 await this.crowdsale.buyTokens(this.account1, { value: purchaseExceedingCap, from: this.account1 });
                 const updatedState = await this.crowdsale.state();
                 const expectedState = currentState.add(1);
                 expectedState.should.bignumber.equal(updatedState);
-
             });
 
         });
