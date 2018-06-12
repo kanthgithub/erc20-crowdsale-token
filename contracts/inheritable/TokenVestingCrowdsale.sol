@@ -4,7 +4,7 @@ import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/TokenVesting.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract TokenVestingCrowdsale is Crowdsale {
+contract TokenVestingCrowdsale is Crowdsale, Ownerable {
 
     function addBeneficiaryVestor(
             address beneficiaryWallet, 
