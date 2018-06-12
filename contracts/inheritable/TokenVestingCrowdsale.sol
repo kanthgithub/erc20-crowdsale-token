@@ -6,14 +6,12 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract TokenVestingCrowdsale is Crowdsale {
 
-    uint256 public constant VESTING_DURATION = 182 days;
-
     function addBeneficiaryVestor(
-            beneficiaryWallet, 
-            tokenAmount, 
-            vestingEpocStart, 
-            cliffInSeconds, 
-            vestingEpocEnd
+            address beneficiaryWallet, 
+            uint256 tokenAmount, 
+            uint256 vestingEpocStart, 
+            uint256 cliffInSeconds, 
+            uint256 vestingEpocEnd
         ) external ownerOnly {
         TokenVesting newVault = new TokenVesting(
             beneficiaryWallet, 
@@ -22,7 +20,7 @@ contract TokenVestingCrowdsale is Crowdsale {
             vestingEpocEnd, 
             false
         );
-        token.mint(address(newVault), TOKEN_AMOUNT);
+        token.mint(address(newVault), tokenAmount);
     }
 
     function releaseVestingTokens(vaultAddress) external ownerOnly {
