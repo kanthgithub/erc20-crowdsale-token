@@ -2,7 +2,7 @@ pragma solidity ^0.4.21;
 
 import "../LittlePhilCoin.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
+import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol"; 
 import "openzeppelin-solidity/contracts/token/ERC20/TokenTimelock.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
@@ -72,13 +72,13 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets
-        _deliverTokens(companyWallet, companyTokens);
-        _deliverTokens(projectWallet, projectTokens);
-        _deliverTokens(advisorWallet, advisorTokens);
-        _deliverTokens(bountyWallet, bountyTokens);
-        _deliverTokens(airdropWallet, airdropTokens);
-        _deliverTokens(address(teamTimeLock1), teamTokensSplit);
-        _deliverTokens(address(teamTimeLock2), teamTokensSplit);
+        token.mint(companyWallet, companyTokens);
+        token.mint(projectWallet, projectTokens);
+        token.mint(advisorWallet, advisorTokens);
+        token.mint(bountyWallet, bountyTokens);
+        token.mint(airdropWallet, airdropTokens);
+        token.mint(address(teamTimeLock1), teamTokensSplit);
+        token.mint(address(teamTimeLock2), teamTokensSplit);
 
         isInitialised = true;
     }
