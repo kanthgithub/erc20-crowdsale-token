@@ -5,8 +5,9 @@ import "./inheritable/InitialSupplyCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/WhitelistedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "./inheritable/TieredCrowdsale.sol";
+import "./inheritable/TokenVestingCrowdsale.sol";
 
-contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyCrowdsale, WhitelistedCrowdsale {
+contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyCrowdsale, WhitelistedCrowdsale, TokenVestingCrowdsale {
 
     /**
     * Event for rate-change logging

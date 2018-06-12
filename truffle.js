@@ -17,6 +17,13 @@ module.exports = {
       from: ownerWallet, // default address to use for any transaction Truffle makes during migrations
       network_id: 4,
       gas: 6712390 // Gas limit used for deploys
+    },
+    live: { // used to launch to the mainnet 
+      host: "localhost",
+      port: 8546, // 
+      from: ownerWallet,
+      network_id: 1,
+      gas: 6712390 // Gas limit used for deploys
     }
   }
 };
