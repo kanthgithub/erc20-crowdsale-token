@@ -12,7 +12,7 @@ contract TokenVestingCrowdsale is Crowdsale, Ownable {
             uint256 vestingEpocStart, 
             uint256 cliffInSeconds, 
             uint256 vestingEpocEnd
-        ) external ownerOnly {
+        ) external onlyOwner {
         TokenVesting newVault = new TokenVesting(
             beneficiaryWallet, 
             vestingEpocStart, 
