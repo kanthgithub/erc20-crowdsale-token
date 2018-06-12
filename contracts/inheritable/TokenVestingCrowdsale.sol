@@ -1,5 +1,6 @@
 pragma solidity ^0.4.21;
 
+import "../LittlePhilCoin.sol";
 import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/TokenVesting.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
@@ -20,7 +21,7 @@ contract TokenVestingCrowdsale is Crowdsale, Ownable {
             vestingEpocEnd, 
             false
         );
-        token.mint(address(newVault), tokenAmount);
+        LittlePhilCoin(token).mint(address(newVault), tokenAmount);
     }
 
     function releaseVestingTokens(address vaultAddress) external onlyOwner {

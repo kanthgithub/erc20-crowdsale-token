@@ -72,13 +72,13 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
         uint256 teamTokensSplit = teamTokens.mul(50).div(100);
 
         // Distribute tokens to reserved wallets
-        token.mint(companyWallet, companyTokens);
-        token.mint(projectWallet, projectTokens);
-        token.mint(advisorWallet, advisorTokens);
-        token.mint(bountyWallet, bountyTokens);
-        token.mint(airdropWallet, airdropTokens);
-        token.mint(address(teamTimeLock1), teamTokensSplit);
-        token.mint(address(teamTimeLock2), teamTokensSplit);
+        LittlePhilCoin(token).mint(companyWallet, companyTokens);
+        LittlePhilCoin(token).mint(projectWallet, projectTokens);
+        LittlePhilCoin(token).mint(advisorWallet, advisorTokens);
+        LittlePhilCoin(token).mint(bountyWallet, bountyTokens);
+        LittlePhilCoin(token).mint(airdropWallet, airdropTokens);
+        LittlePhilCoin(token).mint(address(teamTimeLock1), teamTokensSplit);
+        LittlePhilCoin(token).mint(address(teamTimeLock2), teamTokensSplit);
 
         isInitialised = true;
     }
