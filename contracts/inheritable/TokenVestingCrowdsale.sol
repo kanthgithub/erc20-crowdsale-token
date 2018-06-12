@@ -23,7 +23,7 @@ contract TokenVestingCrowdsale is Crowdsale {
         token.mint(address(newVault), tokenAmount);
     }
 
-    function releaseVestingTokens(vaultAddress) external ownerOnly {
+    function releaseVestingTokens(vaultAddress) external onlyOwner {
         TokenVesting(vaultAddress).release(token);
     }
 
