@@ -25,12 +25,12 @@ contract InitialSupplyCrowdsale is Crowdsale, Ownable {
     TokenTimelock public teamTimeLock2;
 
     // Reserved tokens
-    uint256 public constant companyTokens    = 150000000 * (10 ** decimals);
-    uint256 public constant teamTokens       = 150000000 * (10 ** decimals);
-    uint256 public constant projectTokens    = 150000000 * (10 ** decimals);
-    uint256 public constant advisorTokens    = 100000000 * (10 ** decimals);
-    uint256 public constant bountyTokens     =  30000000 * (10 ** decimals);
-    uint256 public constant airdropTokens    =  20000000 * (10 ** decimals);
+    uint256 public constant companyTokens    = SafeMath.mul(150000000, (10 ** decimals));
+    uint256 public constant teamTokens       = SafeMath.mul(150000000, (10 ** decimals));
+    uint256 public constant projectTokens    = SafeMath.mul(150000000, (10 ** decimals));
+    uint256 public constant advisorTokens    = SafeMath.mul(100000000, (10 ** decimals));
+    uint256 public constant bountyTokens     = SafeMath.mul(30000000, (10 ** decimals));
+    uint256 public constant airdropTokens    = SafeMath.mul(20000000, (10 ** decimals));
 
     bool private isInitialised = false;
 
