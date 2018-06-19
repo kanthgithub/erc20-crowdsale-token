@@ -39,6 +39,13 @@ contract('LittlePhilCrowdsale as MintedCrowdsale', (accounts) => {
             await this.crowdsale.send(value).should.be.fulfilled;
             await this.crowdsale.buyTokens(this.account1, { value: value, from: this.account1 }).should.be.fulfilled;
         });
+
+        it('should not buy tokens for beneficiary address 0', async function () {
+            await this.crowdsale.addToWhitelist(0);
+            await this.crowdsale.buyTokens(0, { value: value, from: this.account1 }).should.not.be.fulfilled;
+            await this.crowdsale.buyTokens(0, { value: value, from: this.account1 }).should.be.rejectedWith('revert');
+        });
+
     });
 
     describe('high-level purchase', function () {
