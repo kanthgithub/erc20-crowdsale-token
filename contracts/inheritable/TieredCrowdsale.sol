@@ -43,6 +43,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     * checks the state when validating a purchase
     */
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal {
+        require(_beneficiary != address(0));
         super._preValidatePurchase(_beneficiary, _weiAmount);
         require(
             state == SaleState.PrivateSale ||
@@ -185,6 +186,7 @@ contract TieredCrowdsale is TokenCappedCrowdsale, Ownable {
     * @dev only allow onwer to modify the current SaleState
     */
     function _updatePurchasingState(address _beneficiary, uint256 _weiAmount) internal {
+        require(_beneficiary != address(0));
         super._updatePurchasingState(_beneficiary, _weiAmount);
 
         if(capReached()) {

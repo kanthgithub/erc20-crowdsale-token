@@ -33,6 +33,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyC
 
     // Ownership management
     function transferTokenOwnership(address _newOwner) external onlyOwner {
+        require(_newOwner != address(0));
         // I assume the crowdsale contract holds a reference to the token contract.
         LittlePhilCoin(token).transferOwnership(_newOwner);
     }
@@ -48,6 +49,7 @@ contract LittlePhilCrowdsale is MintedCrowdsale, TieredCrowdsale, InitialSupplyC
     * checks the state when validating a purchase
     */
     function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal {
+        require(_beneficiary != address(0));
         super._preValidatePurchase(_beneficiary, _weiAmount);
         require(_weiAmount >= 200000000000000000);
     }

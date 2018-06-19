@@ -125,6 +125,11 @@ contract('Token is Ownable', function (accounts) {
         await assertRevert(token.transferOwnership(other, { from: other }));
     });
 
+    it('should prevent owner from transfering to address 0', async function () {
+        const other = 0x0000000000000000000000000000000000000000
+        await token.transferOwnership(other).should.be.rejected;
+    });
+
     it('should guard ownership against stuck state', async function () {
         let originalOwner = await token.owner();
         await assertRevert(token.transferOwnership(null, { from: originalOwner }));
